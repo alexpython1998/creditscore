@@ -1,0 +1,36 @@
+<form action="/submit_polls/" method="post">
+    {% csrf_token %}
+<div class="'container">
+{% for question in questions %}
+    {% if forloop.counter == 1 %}
+    <div class="question_container active" id="question_{{question.id}}" style="">
+        <div class=""question>{{ question.question_text }}</div>
+        <div class="answers">
+        {% for choice in question.choices.all %}
+                <span><input type="radio" class="radio-btn" onclick='change_q("question_{{question.id}}")' id="choice{{choice.id}}"
+                   name="question{{forloop.parentloop.counter}}"
+                   value="{{choice.id}}"/>
+                <label for="choice{{choice.id}}">{{ choice.choice_text }}</label>
+                    </span><br>
+        {% endfor %}
+            </div>
+    </div>
+    {% else %}
+    <div class="question_container inactive" id="question_{{question.id}}">
+        <div class=""question>{{ question.question_text }}</div>
+        <div class="answers">
+        {% for choice in question.choices.all %}
+                <span><input type="radio" id="choice{{choice.id}}" class="radio-btn" onclick='change_q("question_{{question.id}}")'
+                   name="question{{forloop.parentloop.counter}}"
+                   value="{{choice.id}}"/>
+                <label for="choice{{choice.id}}">{{ choice.choice_text }}</label>
+                    </span><br>
+        {% endfor %}
+            </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endfor %}
+<input type="submit" value="Vote"/>
+</form>
